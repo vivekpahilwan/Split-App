@@ -1,4 +1,4 @@
-import { supabase, type Expense } from "./supabase"
+import { getSupabaseClient, type Expense } from "./supabase"
 
 interface Balance {
   person: string
@@ -16,6 +16,7 @@ interface Settlement {
 class ExpenseStore {
   async getAllExpenses(): Promise<Expense[]> {
     try {
+      const supabase = getSupabaseClient()
       const { data, error } = await supabase.from("expenses").select("*").order("created_at", { ascending: false })
 
       if (error) {
@@ -32,6 +33,7 @@ class ExpenseStore {
 
   async getExpenseById(id: string): Promise<Expense | null> {
     try {
+      const supabase = getSupabaseClient()
       const { data, error } = await supabase.from("expenses").select("*").eq("id", id).single()
 
       if (error) {
@@ -56,6 +58,7 @@ class ExpenseStore {
     category?: string
   }): Promise<Expense> {
     try {
+      const supabase = getSupabaseClient()
       const { data, error } = await supabase
         .from("expenses")
         .insert([
@@ -91,6 +94,7 @@ class ExpenseStore {
     },
   ): Promise<Expense> {
     try {
+      const supabase = getSupabaseClient()
       const cleanUpdates: any = {}
 
       if (updates.amount !== undefined) cleanUpdates.amount = updates.amount
@@ -114,6 +118,7 @@ class ExpenseStore {
 
   async deleteExpense(id: string): Promise<void> {
     try {
+      const supabase = getSupabaseClient()
       const { error } = await supabase.from("expenses").delete().eq("id", id)
 
       if (error) {
@@ -128,6 +133,7 @@ class ExpenseStore {
 
   async getAllPeople(): Promise<string[]> {
     try {
+      const supabase = getSupabaseClient()
       const { data, error } = await supabase.from("expenses").select("paid_by")
 
       if (error) {
