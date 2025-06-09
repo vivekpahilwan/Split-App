@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { expenseStore } from "@/lib/store"
+import { expenseStore } from "../../../lib/store"
 
 export async function GET() {
   try {
